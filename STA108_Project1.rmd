@@ -1,0 +1,58 @@
+---
+title: "Project1"
+author: "Risha Chaudri"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+#senic <- read.csv("SENIC-P1.csv")
+senic <- read_csv("Desktop/STA 108/SENIC-P1.csv")
+set.seed(53640)                 # your group's 5-digit seed
+idx <- sample(nrow(senic), 85)
+mydata  <- senic[sort(idx), ]       # 85 hospitals: use for Sections II-VII(c)
+holdout <- senic[-idx, ]            # 28 hospitals: use ONLY in Section VII(d)
+```
+# I. Introduction
+
+State the goal, the data source, the response and the four candidate predictors (with units). Explain why understanding what is associated with a hospital’s average length of stay matters.
+
+
+The goal of the project is to carry out a complete simple linear regression analysis to evaluate the relationships between predictors and hospital length of stay. The data comes from  The Study on the Efficacy of Nosocomial Infection Control (SENIC) which collected the data from a random sample of 113 U.S. hospitals. The response variable is the average length of stay of all patients in the hospital in days. The candidate predictors are infection risk, average daily census, routine chest X-ray ratio, and available facilities and services. Infection risk is the average estimated probability of acquiring an infection in the hospital in percentages. Average daily census is the average number of patients in the hospital per day. Routine chest X-ray ratio is the X-rays performed per 100 patients without signs or symptoms of pneumonia.Available facilities and services are the percent of 35 potential facilities and services the hospital provides.
+
+It is important to understand what is associated with a hospital's average length of stay to determine which predictors are actually important to the model. Predictors that have little to no association with the length will increase the complexity of the model and lead to overfitting. By removing them, the model is easier to interpret. It is also important to check association to determine whether the predictor is linear or if it needs to be transformed to fit the model assumptions.
+
+
+# II. Exploratory Data Analysis
+
+Give numerical summaries (\(n\), mean, standard deviation, minimum, maximum) of length and the four candidate predictors in your sample.
+
+```{r}
+x <- c("length", "infection", "census", "xray", "facility")
+output <- list()
+
+for (i in x) {
+  output[[i]] <- senic |>
+  summarise(
+    Var = i,
+    n = n(), 
+    Mean = mean(.data[[i]], na.rm = T),
+    SD = sd(.data[[i]], na.rm = T),
+    Min = min(.data[[i]], na.rm = T),
+    Max = max(.data[[i]], na.rm = T)) }
+
+output <- bind_rows(output)
+print(output)
+
+```
+
+
+Show the distribution of length (for example, a histogram or boxplot).
+Describe the main features. Point out any unusual hospitals by their id.
+
