@@ -1,6 +1,5 @@
 ---
 title: "Project1"
-author: "Risha Chaudri"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -22,6 +21,10 @@ holdout <- senic[-idx, ]            # 28 hospitals: use ONLY in Section VII(d)
 
 State the goal, the data source, the response and the four candidate predictors (with units). Explain why understanding what is associated with a hospital’s average length of stay matters.
 
+Carry out a complete simple linear regression (SLR) analysis, from exploration through interval estimation.
+Compare competing SLR models using evidence, select one, and check that choice critically.
+Check how well your prediction intervals work on hospitals that were not used to fit the model.
+Propose the dataset your group will use for Project 2 and the Final Project.
 
 The goal of the project is to carry out a complete simple linear regression analysis to evaluate the relationships between predictors and hospital length of stay. The data comes from  The Study on the Efficacy of Nosocomial Infection Control (SENIC) which collected the data from a random sample of 113 U.S. hospitals. The response variable is the average length of stay of all patients in the hospital in days. The candidate predictors are infection risk, average daily census, routine chest X-ray ratio, and available facilities and services. Infection risk is the average estimated probability of acquiring an infection in the hospital in percentages. Average daily census is the average number of patients in the hospital per day. Routine chest X-ray ratio is the X-rays performed per 100 patients without signs or symptoms of pneumonia.Available facilities and services are the percent of 35 potential facilities and services the hospital provides.
 
@@ -37,7 +40,7 @@ x <- c("length", "infection", "census", "xray", "facility")
 output <- list()
 
 for (i in x) {
-  output[[i]] <- senic |>
+  output[[i]] <- mydata |>
   summarise(
     Var = i,
     n = n(), 
@@ -63,7 +66,7 @@ library(plotly)
 
 #Figure 1
 
-hos_id <- senic |>
+hos_id <- mydata |>
   ggplot(aes(x=length)) +
   geom_histogram(binwidth = 1) +
   #to track id in the graph
@@ -75,3 +78,14 @@ ggplotly(hos_id, tooltip = "text")
 ```
 
 The Length distribution is skewed right and unimodal. There are outliers and the most unusual hospitals are hospitals 112 and 47.
+
+
+# Model Fitting and Selection
+
+```{r}
+#4 SLR models
+
+lm(length ~ infection, data = mydata)
+```
+
+
