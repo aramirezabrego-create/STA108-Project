@@ -59,6 +59,10 @@ Describe the main features. Point out any unusual hospitals by their id.
 ```{r}
 library(plotly)
 
+
+
+#Figure 1
+
 hos_id <- senic |>
   ggplot(aes(x=length)) +
   geom_histogram(binwidth = 1) +
@@ -70,3 +74,4 @@ hos_id <- senic |>
 ggplotly(hos_id, tooltip = "text")
 ```
 
+The Length distribution is skewed right and unimodal. There are outliers and the most unusual hospitals are hospitals 112 and 47.
