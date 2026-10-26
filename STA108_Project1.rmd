@@ -55,3 +55,18 @@ print(output)
 Show the distribution of length (for example, a histogram or boxplot).
 Describe the main features. Point out any unusual hospitals by their id.
 
+
+```{r}
+library(plotly)
+
+hos_id <- senic |>
+  ggplot(aes(x=length)) +
+  geom_histogram(binwidth = 1) +
+  #to track id in the graph
+  geom_rug(aes(text = paste("Hospital ID: ", id)))
+  theme_bw() +
+  labs(title = "Distribution of Average Length of Stay of All Patients in Hospitals", y= "Count", x = "Average Length of Stay (Days)")
+
+ggplotly(hos_id, tooltip = "text")
+```
+
