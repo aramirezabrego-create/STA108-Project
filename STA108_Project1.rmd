@@ -12,8 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(tidyverse)
-#senic <- read.csv("SENIC-P1.csv")
-senic <- read_csv("Desktop/STA 108/SENIC-P1.csv")
+senic <- read.csv("SENIC-P1.csv")
 set.seed(53640)                 # your group's 5-digit seed
 idx <- sample(nrow(senic), 85)
 mydata  <- senic[sort(idx), ]       # 85 hospitals: use for Sections II-VII(c)
