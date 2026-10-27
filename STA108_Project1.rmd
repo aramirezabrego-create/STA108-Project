@@ -88,4 +88,29 @@ The Length distribution is skewed right and unimodal. There are outliers and the
 lm(length ~ infection, data = mydata)
 ```
 
+lm(length ~ infection, data = mydata)
+fit <- lm(length ~ infection, data = mydata)
+
+predict(fit, newdata = data.frame(infection = 4.4), interval = "confidence", level = 0.95)
+
+
+predict(fit, newdata = data.frame(infection = 4.4), interval = "prediction", level = 0.95)
+
+predict(fit, newdata = data.frame(infection = c(2.5, 4.5, 7.0)), interval = "confidence", level = 0.95)
+
+
+se_info <- predict(fit, newdata = data.frame(infection = c(2.5, 4.5, 7.0)), se.fit = TRUE)
+W <- sqrt(2 * qf(0.95, df1 = 2, df2 = 83))
+wh_lower <- se_info$fit - W * se_info$se.fit
+wh_upper <- se_info$fit + W * se_info$se.fit
+cbind(X_h = c(2.5, 4.5, 7.0), WH_Lower = wh_lower, WH_Upper = wh_upper)
+
+
+holdout_pi <- predict(fit, newdata = holdout, interval = "prediction", level = 0.95)
+inside <- (holdout$length >= holdout_pi[, "lwr"]) & (holdout$length <= holdout_pi[, "upr"])
+sum(inside)
+
+
+
+
 
